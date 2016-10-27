@@ -18,6 +18,8 @@
 // Global:
 fd_set master_fds;  // Aktive Filedeskriptoren fuer select()
 fd_set read_fds;    // Ergebnis des select() - Aufrufs
+short unsigned int vitalkport = PORT;
+
 
 // Signal Handler:
 void exit_handler( int exitcode )
@@ -32,6 +34,10 @@ void exit_handler( int exitcode )
   exit( exitcode );
 }
 
+#define xstr(s) str(s)
+#define str(s) #s
+#define PORT_S xstr(PORT)
+
 int main(int argc, char **argv)
 {
   // Option processing
@@ -42,7 +48,7 @@ int main(int argc, char **argv)
   struct timeval *timeout = (struct timeval *) malloc( sizeof(struct timeval) );
   
   // Option processing with GNU getopt
-  while ((c = getopt (argc, argv, "hft:")) != -1)
+  while ((c = getopt (argc, argv, "hft:p:")) != -1)
     switch(c)
       {
       case 'h':
@@ -52,6 +58,7 @@ int main(int argc, char **argv)
 	       "  -h            give this help list\n"
 	       "  -f            activate framedebugging\n"
 	       "  -t <tty_dev>  set tty Devicename\n"
+	       "  -p <port>     set port (default: " PORT_S ")\n"
                );
 	exit(1);
       case 'f':
@@ -59,6 +66,9 @@ int main(int argc, char **argv)
 	break;
       case 't':
 	tty_devicename = optarg;
+	break;
+      case 'p':
+	vitalkport = atoi(optarg);
 	break;
       case '?':
 	exit (8);

@@ -10,6 +10,9 @@
 #include "vito_io.h"
 #include "telnet.h"
 
+
+short unsigned int vitalkport;
+
 extern fd_set master_fds; /* file descriptor list for select() */
 extern fd_set read_fds;   /* ergebnis des select() Aufrufs */
 
@@ -117,7 +120,7 @@ void telnet_init( void )
   /* bind */
   serveraddr.sin_family = AF_INET;
   serveraddr.sin_addr.s_addr = INADDR_ANY;
-  serveraddr.sin_port = htons(PORT);
+  serveraddr.sin_port = htons(vitalkport);
   memset(&(serveraddr.sin_zero), '\0', sizeof(serveraddr.sin_zero) );
   if(bind(fd_listener, (struct sockaddr *)&serveraddr, sizeof(serveraddr)) == -1)
     {
