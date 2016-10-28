@@ -11,8 +11,8 @@ addons:
 
 env:
 - TARGET="arm-linux-gnueabihf"
-  CC="${TARGET}-gcc"
-- TARGET=$(gcc -dumpmachine) CC="gcc"
+  XCC="${TARGET}-gcc"
+- TARGET=$(gcc -dumpmachine) XCC="gcc"
 
 script:
-- make
+- CC=${XCC} make
