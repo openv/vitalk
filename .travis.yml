@@ -1,19 +1,26 @@
 dist: trusty
-
 language: c
-
 compiler: gcc
-
 addons:
   apt:
     packages:
     - gcc-arm-linux-gnueabihf
     - libc6-dev-armhf-cross
-
+    - zip
 env:
-- TARGET="arm-linux-gnueabihf"
-  XCC="${TARGET}-gcc"
+- TARGET="arm-linux-gnueabihf" XCC="${TARGET}-gcc"
 - TARGET=$(gcc -dumpmachine) XCC="gcc"
-
 script:
 - CC=${XCC} make
+after_success:
+  - zip "vitalk-${TARGET}.zip" vitalk
+deploy:
+  provider: releases
+  api_key:
+    secure: indsJS5JaxH33nNVuRbJ+2j886QNJT6PlvcLVtJyi7zgEcfvP7ioifjb2/QLPNzTQ6OG/JZGOU7JyF14Dhfx5Nkk8IpNjIUB5uoZvhi3vDsYEIHH3JL/JRWgHaz8wZIR1RULp1YrLyWtbOPTsPgp1mtyoToU1RQpH5hwbQlLr6RH6EMYnd46+Dgp9BxrT4i9n/JPjMczP1vHr5gpgJg/cRetT+XJrBeDVW5sSf4ZAn0BnqeNLhDk5xLPDE2+zm5GH0qlhqGU8dH5TRoUrsQnoXHjw61wY/zlYx3qE9BEANncHCd88GLiaL9gTzPctGI+0OT7F36p7h3gj0Xsa0/g/tUZLvSeNn9awiPdg9K+mVhHocmWMY5EmO8zJcrRz0JI/nxT1DAPpSJG0pGBKdr5LfYrt6GEpB7AaEuzGeulv18DcIomXiaKauy5ubtHcmCh+mo5ew8cMRdwTA1+nI9PUkGJNaupOCmCHs5HtQH8YO9gs+zhb5zpqJV6te6Fwty0o2aTOlOOxVnqWsie1JwEbVrLXi/XD70Fcc6qCw+6HzAHpVqHpZ7lGiZcqw643AfYlL+rIS+lpAgM74SLqtEbwwKGmCJdxmru2lZ7f72hfDA+8UQrEzSrG9r/wF0pwzifdz6vaW4lPKuD9t69mTLIQf/jW1JnJIHcZlkaTv9Lh+w=
+  file: "vitalk-${TARGET}.zip"
+  skip_cleanup: true
+  on:
+    tags: true
+
+
