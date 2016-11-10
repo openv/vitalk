@@ -168,7 +168,7 @@ char *fehlerliste[] = {
 "", //A5
 "", //A6
 "Bedienteil defekt", //A7
-"", //A8
+"Luft in der internen Umwälzpumpe oder Volumenstrom nicht erreicht", //A8
 "", //A9
 "", //AA
 "", //AB
