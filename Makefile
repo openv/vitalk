@@ -6,6 +6,8 @@ vitalk: vitalk.c vito_io.c vito_io.h vito_parameter.c vito_parameter.h telnet.c 
 	$(CC) -D PORT=$(PORT) -Wall -o vitalk \
 	    vitalk.c vito_io.c vito_parameter.c telnet.c
 
+all: vitalk
+
 clean:
-	rm vitalk
+	rm -f vitalk
 
