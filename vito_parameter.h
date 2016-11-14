@@ -21,6 +21,9 @@ extern const struct s_parameter parameter_liste[];
 #define P_BRENNER    6
 #define P_HYDRAULIK  7
 
+#define FROMBCD(x)      (((x) >> 4) * 10 + ((x) & 0xf))
+#define TOBCD(x)        (((x) / 10 * 16) + ((x) % 10))
+
 // Prototypen:
 const char * const get_v( const char *name );
 const char * const get_u( const char *name );
