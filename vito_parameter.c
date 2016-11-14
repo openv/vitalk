@@ -55,6 +55,44 @@ const char * const read_deviceid( void )
 }
 
 /* -------------------------------- */
+const char * const read_systemtime( void )
+{
+  static char cache[16];
+  prologue()
+    if ( vito_read( 0x088e, 8, vitomem ) < 0 )
+      return "NULL";
+  sprintf( cache, "%02X%02X%02X%02X%02X%02X%02X%02X", vitomem[0], vitomem[1], vitomem[2], vitomem[3], vitomem[4], vitomem[5], vitomem[6], vitomem[7] );
+  epilogue()
+}
+
+/* -------------------------------- */
+const char * const write_systemtime( const char * value_str )
+{
+    uint8_t vito_date[8];
+    time_t tt;
+    struct tm* t;
+
+    time(&tt);
+    t = localtime(&tt);
+    vito_date[0] = TOBCD(20);
+    vito_date[1] = TOBCD(t->tm_year -100 ); // according to the range settable on the Vitodens LCD frontpanel
+    vito_date[2] = TOBCD(t->tm_mon + 1);
+    vito_date[3] = TOBCD(t->tm_mday);
+    vito_date[4] = TOBCD(t->tm_wday);
+    vito_date[5] = TOBCD(t->tm_hour);
+    vito_date[6] = TOBCD(t->tm_min);
+    vito_date[7] = TOBCD(t->tm_sec);
+    if ( vito_write(0x088e, 8, vito_date) < 0)
+    {
+	    return "Vitodens communication Error on setting systemtime";
+    }
+    else
+    {
+	return "OK";
+    }
+}
+
+/* -------------------------------- */
 const char * const read_mode( void )
 {
   static char cache[5];
@@ -565,22 +603,23 @@ const struct s_parameter parameter_liste[] = {
   { "errors", "Error History (numerisch)", "", P_ERRORS, &read_errors, NULL },
   { "errors_text", "Error History (text)", "", P_ERRORS, &read_errors_text, NULL },
   { "deviceid", "Geraeteidentifikation", "", P_ALLGEMEIN, &read_deviceid, NULL },
+  { "systemtime", "Systemzeit", "", P_ALLGEMEIN, &read_systemtime, &write_systemtime },
   { "mode", "Betriebsmodus (numerisch)", "", P_ALLGEMEIN, &read_mode, &write_mode },
   { "mode_text", "Betriebsmodus (text)", "", P_ALLGEMEIN, &read_mode_text, NULL },
-  { "outdoor_temp", "Aussentemperatur", "oC", P_ALLGEMEIN, &read_outdoor_temp, NULL },
-  { "outdoor_temp_tp", "Aussentemperatur Tiefpass", "oC", P_ALLGEMEIN, &read_outdoor_temp_tp, NULL },
-  { "outdoor_temp_smooth", "Aussentemperatur Gedaempft", "oC", P_ALLGEMEIN, &read_outdoor_temp_smooth, NULL },
-  { "k_ist_temp", "Kessel Ist Temperatur", "oC", P_KESSEL, &read_k_ist_temp, NULL },
-  { "k_ist_temp_tp", "Kessel Ist T. nach Tiefpass", "oC", P_KESSEL, &read_k_ist_temp_tp, NULL },
-  { "k_soll_temp", "Kessel Soll Temperatur", "oC", P_KESSEL, &read_k_soll_temp, NULL },
-  { "k_abgas_temp", "Kessel Abgastemperatur", "oC", P_KESSEL, &read_abgas_temp, NULL },
-  { "ww_soll_temp", "Warmwasser Soll Temperatur", "oC", P_WARMWASSER, &read_ww_soll_temp, &write_ww_soll_temp },
-  { "ww_ist_temp", "Warmwasser Ist Temperatur", "oC", P_WARMWASSER, &read_ww_ist_temp, NULL },
-  { "ww_ist_temp_tp", "Warmwasser Ist Temp. Tiefpass", "oC", P_WARMWASSER, &read_ww_ist_temp_tp, NULL },
+  { "outdoor_temp", "Aussentemperatur", "°C", P_ALLGEMEIN, &read_outdoor_temp, NULL },
+  { "outdoor_temp_tp", "Aussentemperatur Tiefpass", "°C", P_ALLGEMEIN, &read_outdoor_temp_tp, NULL },
+  { "outdoor_temp_smooth", "Aussentemperatur Gedaempft", "°C", P_ALLGEMEIN, &read_outdoor_temp_smooth, NULL },
+  { "k_ist_temp", "Kessel Ist Temperatur", "°C", P_KESSEL, &read_k_ist_temp, NULL },
+  { "k_ist_temp_tp", "Kessel Ist T. nach Tiefpass", "°C", P_KESSEL, &read_k_ist_temp_tp, NULL },
+  { "k_soll_temp", "Kessel Soll Temperatur", "°C", P_KESSEL, &read_k_soll_temp, NULL },
+  { "k_abgas_temp", "Kessel Abgastemperatur", "°C", P_KESSEL, &read_abgas_temp, NULL },
+  { "ww_soll_temp", "Warmwasser Soll Temperatur", "°C", P_WARMWASSER, &read_ww_soll_temp, &write_ww_soll_temp },
+  { "ww_ist_temp", "Warmwasser Ist Temperatur", "°C", P_WARMWASSER, &read_ww_ist_temp, NULL },
+  { "ww_ist_temp_tp", "Warmwasser Ist Temp. Tiefpass", "°C", P_WARMWASSER, &read_ww_ist_temp_tp, NULL },
   { "ww_offset", "Offset Kessel/WW Soll", "K", P_WARMWASSER, &read_ww_offset, NULL },
-  { "vl_soll_temp", "Vorlauf Solltemperatur", "oC", P_HEIZKREIS, &read_vl_soll_temp, NULL },
-  { "raum_soll_temp", "Raum Solltemperatur", "oC", P_HEIZKREIS, &read_raum_soll_temp, &write_raum_soll_temp },
-  { "red_raum_soll_temp", "Reduzierte Raum Solltemperatur", "oC", P_HEIZKREIS, &read_red_raum_soll_temp, &write_red_raum_soll_temp },
+  { "vl_soll_temp", "Vorlauf Solltemperatur", "°C", P_HEIZKREIS, &read_vl_soll_temp, NULL },
+  { "raum_soll_temp", "Raum Solltemperatur", "°C", P_HEIZKREIS, &read_raum_soll_temp, &write_raum_soll_temp },
+  { "red_raum_soll_temp", "Reduzierte Raum Solltemperatur", "°C", P_HEIZKREIS, &read_red_raum_soll_temp, &write_red_raum_soll_temp },
   { "niveau", "Heizkurve Niveau", "K", P_HEIZKREIS, &read_niveau, NULL },
   { "neigung", "Heizkurve Neigung", "", P_HEIZKREIS, &read_neigung, NULL },
   { "pp_max", "Pumpenleistung Maximal", "%", P_HEIZKREIS, &read_pp_max, &write_pp_max },
@@ -592,7 +631,7 @@ const struct s_parameter parameter_liste[] = {
   { "ventil", "Ventilstellung", "", P_HYDRAULIK, &read_ventil, NULL },
   { "ventil_text", "Ventilstellung", "", P_HYDRAULIK, &read_ventil_text, NULL },
   { "pump_power", "Pumpenleistung", "%", P_HYDRAULIK, &read_pump_power, NULL },
-  { "flow", "Volumenstrom", "l/h", P_HYDRAULIK, &read_flow, NULL },
+/*  { "flow", "Volumenstrom", "l/h", P_HYDRAULIK, &read_flow, NULL }, */
   { NULL, NULL, NULL, 0, NULL, NULL }
 };
 
