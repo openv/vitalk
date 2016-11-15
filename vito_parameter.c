@@ -74,8 +74,8 @@ const char * const write_systemtime( const char * value_str )
 
     time(&tt);
     t = localtime(&tt);
-    vito_date[0] = TOBCD(20);
-    vito_date[1] = TOBCD(t->tm_year -100 ); // according to the range settable on the Vitodens LCD frontpanel
+    vito_date[0] = TOBCD((t->tm_year + 1900) / 100);
+    vito_date[1] = TOBCD(t->tm_year - 100 ); // according to the range settable on the Vitodens LCD frontpanel
     vito_date[2] = TOBCD(t->tm_mon + 1);
     vito_date[3] = TOBCD(t->tm_mday);
     vito_date[4] = TOBCD(t->tm_wday);
