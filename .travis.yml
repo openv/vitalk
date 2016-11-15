@@ -30,7 +30,7 @@ before_install:
 - echo -n | openssl s_client -connect scan.coverity.com:443 | sed -ne '/-BEGIN CERTIFICATE-/,/-END
   CERTIFICATE-/p' | sudo tee -a /etc/ssl/certs/ca-
 script:
-- VERSION=$(git describe --long --tags --dirty --always --match 'v[0-9]\.[0-9]')
+- VERSION=$(shell git describe --long --tags --always --match '[0-9]\.[0-9].*')
 - CC=${XCC} make
 after_success:
 - test -n "${TRAVIS_TAG" && zip "${GH_REPO}-${TARGET}.zip" vitalk LICENSE
