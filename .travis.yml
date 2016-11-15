@@ -1,4 +1,5 @@
 dist: trusty
+sudo: required
 language: c
 compiler: gcc
 addons:
@@ -7,6 +8,7 @@ addons:
     - gcc-arm-linux-gnueabihf
     - libc6-dev-armhf-cross
     - zip
+    - checkinstall
   coverity_scan:
     project:
       name: speters/vitalk
@@ -18,22 +20,27 @@ addons:
     branch_pattern: master
 env:
   global:
+  - GH_REPO=$(echo -n "${TRAVIS_REPO_SLUG}" | cut -d "/" -f 2)
+  - GH_USER=$(echo -n "${TRAVIS_REPO_SLUG}" | cut -d "/" -f 1)
   - secure: oR6s6tTx7YPbX3xhZ+ACemnlBeFwMjG0Lw5hlFeyJoXOx+Z/6L9aPyFgVXUnx5OO9V14PUCEZs14OIcRlacFbILSEfP8t+v+EqmUlhPCA1Tz126264xTxSftJORTg6AvLukp6HRuv3fFgyUwFcXB8vf+aCqsJ+62QclCwQVOURT8A9KHqXeJ/tPTa3wUBjGoo8c0MtTHt/a2Cy053wJrGZ/x99aeY16bpRNX0c2f4iERkLlhLXth7IDrSOBVo/X7SuxP1TmDYuDfSE9WgZqKb4NTglUCF3dWKcgKTWxdVcefGoAZ1QNmWIw3hPnk5NeP6iwD8+Zqun4VIFXfl0P2I5VGI8D6cGb8C6Lmf2pK6Qu8dfjN9aZ4TFa/nmOoBDnOqdOJ+xLWoqTbWRMSbbZfIp+gp3G7DQS7aqU8SFfeXy/LSzs7kaaBlH6sac+KblM6XQmaK8sFmj8+utqb1rxjFoJ1zP7jAa5smDDVtUxrXpnqkPDPGL4nKqmo8FMhXaa0ouUTAZmDqrf1bLFdh5M3xDHpwQIJUQMWEknrbYHEbylSHOJI+fbfHjA+nHnkR2oJtCkFxyawJdZ8kMuCvZXNGuZcDRIsw336JfdqbIK8XQDgALcFjQUnJau1jDVjhtt6Cp8GWXkVHf4gJni471/FaZXslyhEHPs1Tdw7htjFfHA=
   matrix:
-  - TARGET="arm-linux-gnueabihf" XCC="${TARGET}-gcc"
-  - TARGET=$(gcc -dumpmachine) XCC="gcc"
+  - ARCH="armhf" TARGET="arm-linux-gnueabihf" XCC="${TARGET}-gcc"
+  - ARCH=$(dpkg --print-architecture) TARGET=$(gcc -dumpmachine) XCC="gcc"
 before_install:
 - echo -n | openssl s_client -connect scan.coverity.com:443 | sed -ne '/-BEGIN CERTIFICATE-/,/-END
   CERTIFICATE-/p' | sudo tee -a /etc/ssl/certs/ca-
 script:
 - CC=${XCC} make
 after_success:
-- zip "vitalk-${TARGET}.zip" vitalk
+- test -n "${TRAVIS_TAG" && zip "${GH_REPO}-${TARGET}.zip" vitalk LICENSE
+- test -n "${TRAVIS_TAG}" && sudo checkinstall --pkgname="$GH_REPO" --pkgversion="$TRAVIS_TAG" --pkgrelease=$TRAVIS_BUILD_NUMBER --arch="$ARCH" --maintainer="${GH_USER}@GitHub" -D -y install vitalk /usr/local/sbin/ 
 deploy:
   provider: releases
   api_key:
     secure: indsJS5JaxH33nNVuRbJ+2j886QNJT6PlvcLVtJyi7zgEcfvP7ioifjb2/QLPNzTQ6OG/JZGOU7JyF14Dhfx5Nkk8IpNjIUB5uoZvhi3vDsYEIHH3JL/JRWgHaz8wZIR1RULp1YrLyWtbOPTsPgp1mtyoToU1RQpH5hwbQlLr6RH6EMYnd46+Dgp9BxrT4i9n/JPjMczP1vHr5gpgJg/cRetT+XJrBeDVW5sSf4ZAn0BnqeNLhDk5xLPDE2+zm5GH0qlhqGU8dH5TRoUrsQnoXHjw61wY/zlYx3qE9BEANncHCd88GLiaL9gTzPctGI+0OT7F36p7h3gj0Xsa0/g/tUZLvSeNn9awiPdg9K+mVhHocmWMY5EmO8zJcrRz0JI/nxT1DAPpSJG0pGBKdr5LfYrt6GEpB7AaEuzGeulv18DcIomXiaKauy5ubtHcmCh+mo5ew8cMRdwTA1+nI9PUkGJNaupOCmCHs5HtQH8YO9gs+zhb5zpqJV6te6Fwty0o2aTOlOOxVnqWsie1JwEbVrLXi/XD70Fcc6qCw+6HzAHpVqHpZ7lGiZcqw643AfYlL+rIS+lpAgM74SLqtEbwwKGmCJdxmru2lZ7f72hfDA+8UQrEzSrG9r/wF0pwzifdz6vaW4lPKuD9t69mTLIQf/jW1JnJIHcZlkaTv9Lh+w=
-  file: vitalk-${TARGET}.zip
+  file:
+  - "${GH_REPO}-${TARGET}.zip"
+  - "${GH_REPO}_${TRAVIS_TAG}_${TRAVIS_BUILD_NUMBER}_${ARCH}.deb"
   skip_cleanup: true
   on:
     tags: true
