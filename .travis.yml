@@ -34,7 +34,7 @@ script:
 - CC=${XCC} make
 after_success:
 - test -n "${TRAVIS_TAG" && zip "${GH_REPO}-${TARGET}.zip" vitalk LICENSE
-- test -n "${TRAVIS_TAG}" && sudo checkinstall --pkgname="$GH_REPO" --pkgversion="$TRAVIS_TAG" --pkgrelease=$TRAVIS_BUILD_NUMBER --arch="$ARCH" --maintainer="${GH_USER}@GitHub" -D -y install vitalk /usr/local/sbin/ 
+- test -n "${TRAVIS_TAG}" && sudo checkinstall --pkgname="$GH_REPO" --pkgversion="$VERSION" --pkgrelease=$TRAVIS_BUILD_NUMBER --arch="$ARCH" --maintainer="${GH_USER}@GitHub" -D -y install vitalk /usr/local/sbin/ 
 deploy:
   provider: releases
   api_key:
