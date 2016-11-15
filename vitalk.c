@@ -11,6 +11,7 @@
 #include "vito_io.h"
 #include "telnet.h"
 #include "vito_parameter.h"
+#include "version.h"
 
 // This define enables communication with Vitodens:
 #define VITOCOM
@@ -53,12 +54,13 @@ int main(int argc, char **argv)
       {
       case 'h':
 	printf("Vitalk, Viessmann Vitodens 300 (B3HA) Interface\n"
-	       " (c) by KWS, 2013\n\n"
+	       " (c) by KWS, 2013\n"
+	       " version %s\n\n"
 	       "Usage: vitalk [option...]\n"
 	       "  -h            give this help list\n"
 	       "  -f            activate framedebugging\n"
 	       "  -t <tty_dev>  set tty Devicename\n"
-	       "  -p <port>     set port (default: " PORT_S ")\n"
+	       "  -p <port>     set port (default: " PORT_S ")\n", version
                );
 	exit(1);
       case 'f':
