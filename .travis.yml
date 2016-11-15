@@ -33,7 +33,7 @@ script:
 - VERSION=$(git describe --long --tags --always --match '[0-9]\.[0-9].*')
 - CC=${XCC} make clean all
 after_success:
-- test -n "${TRAVIS_TAG}" && zip "${GH_REPO}-${ARCH}.zip" vitalk LICENSE
+- test -n "${TRAVIS_TAG}" && zip "${GH_REPO}-${ARCH}.zip" vitalk LICENSE README.md
 - test -n "${TRAVIS_TAG}" && sudo checkinstall --strip=no --install=no --pkgname="$GH_REPO" --pkgversion="$VERSION" --pkgrelease=$TRAVIS_BUILD_NUMBER --arch="$ARCH" --maintainer="${GH_USER}@GitHub" -D -y install vitalk /usr/local/sbin/ 
 deploy:
   provider: releases
