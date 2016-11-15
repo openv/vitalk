@@ -33,15 +33,15 @@ script:
 - VERSION=$(git describe --long --tags --always --match '[0-9]\.[0-9].*')
 - CC=${XCC} make clean all
 after_success:
-- test -n "${TRAVIS_TAG}" && zip "${GH_REPO}-${ARCH}.zip" vitalk LICENSE README.md
+- test -n "${TRAVIS_TAG}" && zip "${GH_REPO}_${VERSION}_${TRAVIS_BUILD_NUMBER}_${ARCH}.zip" vitalk LICENSE README.md
 - test -n "${TRAVIS_TAG}" && sudo checkinstall --strip=no --install=no --pkgname="$GH_REPO" --pkgversion="$VERSION" --pkgrelease=$TRAVIS_BUILD_NUMBER --arch="$ARCH" --maintainer="${GH_USER}@GitHub" -D -y install vitalk /usr/local/sbin/ 
 deploy:
   provider: releases
   api_key:
     secure: indsJS5JaxH33nNVuRbJ+2j886QNJT6PlvcLVtJyi7zgEcfvP7ioifjb2/QLPNzTQ6OG/JZGOU7JyF14Dhfx5Nkk8IpNjIUB5uoZvhi3vDsYEIHH3JL/JRWgHaz8wZIR1RULp1YrLyWtbOPTsPgp1mtyoToU1RQpH5hwbQlLr6RH6EMYnd46+Dgp9BxrT4i9n/JPjMczP1vHr5gpgJg/cRetT+XJrBeDVW5sSf4ZAn0BnqeNLhDk5xLPDE2+zm5GH0qlhqGU8dH5TRoUrsQnoXHjw61wY/zlYx3qE9BEANncHCd88GLiaL9gTzPctGI+0OT7F36p7h3gj0Xsa0/g/tUZLvSeNn9awiPdg9K+mVhHocmWMY5EmO8zJcrRz0JI/nxT1DAPpSJG0pGBKdr5LfYrt6GEpB7AaEuzGeulv18DcIomXiaKauy5ubtHcmCh+mo5ew8cMRdwTA1+nI9PUkGJNaupOCmCHs5HtQH8YO9gs+zhb5zpqJV6te6Fwty0o2aTOlOOxVnqWsie1JwEbVrLXi/XD70Fcc6qCw+6HzAHpVqHpZ7lGiZcqw643AfYlL+rIS+lpAgM74SLqtEbwwKGmCJdxmru2lZ7f72hfDA+8UQrEzSrG9r/wF0pwzifdz6vaW4lPKuD9t69mTLIQf/jW1JnJIHcZlkaTv9Lh+w=
   file:
-  - "${GH_REPO}-${ARCH}.zip"
-  - "${GH_REPO}_${TRAVIS_TAG}_${TRAVIS_BUILD_NUMBER}_${ARCH}.deb"
+  - "${GH_REPO}_${VERSION}_${TRAVIS_BUILD_NUMBER}_${ARCH}.zip"
+  - "${GH_REPO}_${VERSION}_${TRAVIS_BUILD_NUMBER}_${ARCH}.deb"
   skip_cleanup: true
   on:
     tags: true
