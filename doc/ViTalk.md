@@ -1,6 +1,4 @@
-![real-optolink.jpg](files/real-optolink.jpg)Vor einiger Zeit habe ich auch eine Software für das 300er Protokoll geschrieben. Vcontrold konnte da nur KW und vconnect entsprach auch nicht so ganz meinen Vorstellungen.
-
-Wer damit experimentieren möchte, kann die Software bei [https://github.com/openv/vitalk](https://github.com/openv/vitalk) downloaden.
+![real-optolink.jpg](real-optolink.jpg)Vor einiger Zeit habe ich auch eine Software für das 300er Protokoll geschrieben. Vcontrold konnte da nur KW und vconnect entsprach auch nicht so ganz meinen Vorstellungen.
 
 Es hat keine XML Konfiguration. Stattdessen gibt es für jeden Parameter eine kleine C-Funktion in der ggf. entsprechende Anpassungen gemacht werden.
 Ich benutze es für die Vitodens B3HA und dafür sind in dem Archiv auch die Parameter konfiguriert.
@@ -89,5 +87,9 @@ OK
 
 
 Bei mir läuft das übrigens auf einem RaspberryPi. Wobei ich mir inzwischen vielleicht lieber mal dieses Beaglebone Teil ansehen würde.
-<span style="display: block; text-align: center;">![paspi-vito.jpg](files/paspi-vito.jpg)![heatcontrol-echtzeit-anon.jpg](files/heatcontrol-echtzeit-anon.jpg)(file:heatcontrol-echtzeit-anon.jpg)</span><span style="display: block; text-align: center;">![heatcontrol-heizung-anon.jpg](files/heatcontrol-heizung-anon.jpg)(file:heatcontrol-heizung-anon.jpg)
-</span>
+
+![paspi-vito.jpg](paspi-vito.jpg)
+
+![heatcontrol-echtzeit-anon.jpg](heatcontrol-echtzeit-anon.jpg)
+
+![heatcontrol-heizung-anon.jpg](heatcontrol-heizung-anon.jpg)
