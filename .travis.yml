@@ -17,7 +17,7 @@ addons:
       secure: LIIDJ9bcwkIy90NGu8cYuZGbJqTsfZ+Y2hfVly/WHXAzrA35/Gw1LeG0Jkcz4QwWGJ/7t2ZlClOtRBLSHY5FSh8ZpE/qbmOA6mW8AFUzInKfyteXK7YDSJSDJh+ehVguu+0z/IWWOArGq7qWYuDX0jgdSN+w/+5/YsBr9a/9lu7fe/lQIqfKOXwrlGs/TvCmYoVcFiFr2QF9VjQuvQYy62I7KGnhCK1vfTCKdV/ofJMrH12PkRd8zS/CZtZdoM4gUL0lwzGIMF11VwYSdyRsJvlR685TTTqpuGZ9LYoPmEmvN6jcIAMetIzT3gzbjgmAVQLPVZE/bYCeDBT1tEvOPWKdZ3zsbsBJYEOcYPRDEH3pkJG+k9LfJjxcSpBJoZgd5hUuKuLHYN2pfWNyxBs1CU0Hbz+/w3QkFTBcfEloO6fRNAor8+YA8DwWHF/1fHp3UyggB6TlGYCsUsoZxpBxX8xrb2oMZhSEKThgyaedHaCrB1YzUVSxMAD45aGFJXXoB4nzizbIZY9j7iDMVUv5dfXtLHBj4xDWnUZdscSKYr09koJzzZ0MOFMdedqc1s6sBTrFQpEK+4OLiycGI8X2j2JtZIE9LXGru3Ews0EkvK6huVUv4q7LcuNWM99bFpXiPVU+84zQ/zywwlxHCkUcKeWaps8dF2xq0pdYfcSAAbU=
     build_command_prepend: make clean
     build_command: make -j 4 all
-    branch_pattern: master
+    branch_pattern: coverity_scan
 env:
   global:
   - GH_REPO=$(echo -n "${TRAVIS_REPO_SLUG}" | cut -d "/" -f 2)
