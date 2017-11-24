@@ -1,4 +1,6 @@
-![real-optolink.jpg](real-optolink.jpg)Vor einiger Zeit habe ich auch eine Software für das 300er Protokoll geschrieben. Vcontrold konnte da nur KW und vconnect entsprach auch nicht so ganz meinen Vorstellungen.
+![real-optolink.jpg](real-optolink.jpg)
+
+Vor einiger Zeit habe ich (@klauweg) auch eine Software für das 300er Protokoll geschrieben. Vcontrold konnte da nur KW und vconnect entsprach auch nicht so ganz meinen Vorstellungen.
 
 Es hat keine XML Konfiguration. Stattdessen gibt es für jeden Parameter eine kleine C-Funktion in der ggf. entsprechende Anpassungen gemacht werden.
 Ich benutze es für die Vitodens B3HA und dafür sind in dem Archiv auch die Parameter konfiguriert.
